@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.left20Right20Margin
+{
+    margin-left :20px;
+    margin-right: 20px;
+}
+.width150
+{
+width: 1150px;    
+}
+.width200
+{
+    width: 200px;
+}
