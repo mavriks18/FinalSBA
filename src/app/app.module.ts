@@ -9,21 +9,30 @@ import { AddTaskComponent } from './components/add-task/add-task.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import {HttpClientModule} from '@angular/common/http'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { SearchModalComponent } from './components/search-modal/search-modal.component';
+import { SearchProjectComponent } from './components/search-project/search-project.component';
+import { SearchTaskComponent } from './components/search-task/search-task.component'
 @NgModule({
   declarations: [
     AppComponent,
     AddUserComponent,
     AddProjectComponent,
     AddTaskComponent,
-    TaskListComponent
+    TaskListComponent,
+    SearchModalComponent,
+    SearchProjectComponent,
+    SearchTaskComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule, ReactiveFormsModule
+    FormsModule, ReactiveFormsModule,
+    NgbModule
   ],
+  entryComponents : [SearchModalComponent,SearchProjectComponent,
+    SearchTaskComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

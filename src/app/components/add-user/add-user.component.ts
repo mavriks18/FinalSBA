@@ -25,8 +25,8 @@ export class AddUserComponent implements OnInit {
       task_id:""
     }
   }
-onAddUserSubmit(form :NgForm)
+  onAddUserSubmit(form :NgForm)
 {
-//console.log('received ' + form.value.firstName + " " + form.value.lastName + " " + form.value.employee_id);
+console.log('received ' + form.value.firstName + " " + form.value.lastName + " " + form.value.employee_id);
 }
 }

@@ -18,7 +18,9 @@ export class ProjectManagementService {
   taskList : Task[];
   usersList: Users[];
 readonly baseURL = "http://localhost:3000/projectDetails"
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient) {
+    
+   }
 
   postProjectDetail(project : Project)
   {
@@ -80,5 +82,9 @@ readonly baseURL = "http://localhost:3000/projectDetails"
     return this.http.delete(this.baseURL +'/deleteUser/'+id);
   }
   
+  getAllUsers()
+  {
+    return this.http.get(this.baseURL +'/getAllUsers');
+  }
 
 }

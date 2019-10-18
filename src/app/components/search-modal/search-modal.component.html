@@ -1,0 +1,70 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{my_modal_title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p> {{my_modal_content}}</p>
+    <div class="container">
+      <!-- <table class="table">
+        <thead>
+          <tr>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Default</td>
+            <td>Defaultson</td>
+            <td>def@somemail.com</td>
+          </tr>      
+          <tr class="success">
+            <td>Success</td>
+            <td><a (click)="saveManager(my_modal_content);">{{my_modal_content}}</a></td>
+            <td>john@example.com</td>
+          </tr>
+          <tr class="danger">
+            <td>Danger</td>
+            <td>Moe</td>
+            <td>mary@example.com</td>
+          </tr>
+          <tr class="info">
+            <td>Info</td>
+            <td>Dooley</td>
+            <td>july@example.com</td>
+          </tr>
+          <tr class="warning">
+            <td>Warning</td>
+            <td>Refs</td>
+            <td>bo@example.com</td>
+          </tr>
+          <tr class="active">
+            <td>Active</td>
+            <td>Activeson</td>
+            <td>act@example.com</td>
+          </tr>
+        </tbody>
+      </table> -->
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Manager Name</th>
+            <th>Manager Id</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let item of projectMgmtService.usersList">
+            <td><a (click)="saveManager(item.user_id);">{{item.firstName}} &nbsp; {{item.lastName}}</a></td>
+            <td>{{item.user_id}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeUsersModal()">Close</button>
+  </div>
+
+  
