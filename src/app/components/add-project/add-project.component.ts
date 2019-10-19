@@ -22,8 +22,7 @@ export class AddProjectComponent implements OnInit {
   currentDate : Date = new Date();
   closeResult: string;
   ngOnInit() {
-    this.projectManagementSvc.selectedProject ={
-      _id:"",
+    this.projectManagementSvc.selectedProject ={      
       project_id : "",
       project :"",
       priority :"",
@@ -60,7 +59,7 @@ export class AddProjectComponent implements OnInit {
     if(form){
       form.reset();
       this.projectManagementSvc.selectedProject ={
-        _id:"",
+      
         project_id : "",
         project :"",
         priority :"",

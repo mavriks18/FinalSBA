@@ -39,7 +39,7 @@ export class TaskListComponent implements OnInit {
       user_id :""
    }];
    this.projectManagementSvc.selectedProject ={
-    _id:"",
+   
     project_id : "",
     project :"",
     priority :"",
