@@ -1,1 +1,28 @@
-<p>search-project works!</p>
+<div class="modal-header">
+    <h4 class="modal-title">Choose a Project</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">    
+    <div class="container">      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project Name</th>
+            <th>Project Id</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor = "let item of projectMgmtService.projectList">
+            <td><a (click)="saveManager(item.project_id);">{{item.project}}</a></td>
+            <td>{{item.project_id}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="closeUsersModal()">Close</button>
+  </div>
+
+  

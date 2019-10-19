@@ -31,7 +31,7 @@ export class AddProjectComponent implements OnInit {
       end_date : new Date(),
       manager :""
     }
-    this.currentDate.setDate(this.currentDate.getDate() +4)
+    //this.currentDate.setDate(this.currentDate.getDate() +4)
     this.projectManagementSvc.selectedProject.end_date.setDate(this.currentDate.getDate() +1)
   }
   onAddProjectSubmit(form:NgForm)
@@ -55,7 +55,21 @@ export class AddProjectComponent implements OnInit {
     modalRef.componentInstance.my_modal_title = 'I your title';
     modalRef.componentInstance.my_modal_content = 'I am your content';
   }
-  
+  resetProjectForm(form? : NgForm)
+  {
+    if(form){
+      form.reset();
+      this.projectManagementSvc.selectedProject ={
+        _id:"",
+        project_id : "",
+        project :"",
+        priority :"",
+        start_date: new Date(),
+        end_date : new Date(),
+        manager :""
+      }
+    }
+  }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';

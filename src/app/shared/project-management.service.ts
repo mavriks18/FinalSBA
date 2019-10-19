@@ -17,9 +17,19 @@ export class ProjectManagementService {
   projectList : Project[];
   taskList : Task[];
   usersList: Users[];
+
+  
 readonly baseURL = "http://localhost:3000/projectDetails"
   constructor( private http: HttpClient) {
-    
+    this.selectedProject = {
+      _id:"",
+      project_id : "",
+      project :"",
+      priority :"",
+      start_date: new Date(),
+      end_date : new Date(),
+      manager :""
+    }
    }
 
   postProjectDetail(project : Project)
@@ -41,7 +51,10 @@ readonly baseURL = "http://localhost:3000/projectDetails"
   {
     return this.http.delete(this.baseURL +'/deleteProject/'+id);
   }
-
+  getAllProjects()
+  {
+    return this.http.get(this.baseURL +'/getAllProjects');
+  }
   postTaskDetail(task : Task)
   {
     return this.http.post(this.baseURL + '/addTask', task);
@@ -60,6 +73,11 @@ readonly baseURL = "http://localhost:3000/projectDetails"
   deleteTask(id:string)
   {
     return this.http.delete(this.baseURL +'/deleteTask/'+id);
+  }
+
+  getAllTasks()
+  {
+    return this.http.get(this.baseURL + '/getAllTasks');
   }
 
   postUserDetail(user : Users)

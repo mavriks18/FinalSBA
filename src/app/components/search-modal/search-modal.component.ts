@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {ProjectManagementService} from 'src/app/shared/project-management.service'
-import { from } from 'rxjs';
 import {Users} from 'src/app/shared/models/users.model'
 import { FormsModule } from '@angular/forms';
 
@@ -11,10 +10,11 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search-modal.component.css']
 })
 export class SearchModalComponent implements OnInit {
-  @Input() my_modal_title;
-  @Input() my_modal_content;
+  // @Input() my_modal_title;
+  // @Input() my_modal_content;
   _users : Users[];
-  constructor(public activeModal: NgbActiveModal, private projectMgmtService :ProjectManagementService ) { 
+  constructor(public activeModal: NgbActiveModal, 
+    private projectMgmtService :ProjectManagementService ) { 
     this._users = [{
       _id:"1",
     user_id:"12",
@@ -45,12 +45,13 @@ getUsers()
   this.projectMgmtService.getAllUsers().subscribe((res)=>{
     this.projectMgmtService.usersList = res as Users[];          
   });
-  
+  this.projectMgmtService.usersList = this._users;
 }
   saveManager(x)
   {
     
     this.projectMgmtService.selectedProject.manager = x;
+    this.projectMgmtService.selectedTask.user_id = x;
     this.activeModal.close();
     
   }
