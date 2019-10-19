@@ -64,7 +64,10 @@ readonly baseURL = "http://localhost:3000/projectDetails"
   {
     return this.http.get(this.baseURL + '/getTask/' + id );
   }
-
+  getTaskListForProject(id:string)
+  {
+    return this.http.get(this.baseURL + '/getTaskForProjectId/' + id );
+  }
   editTask(task : Task)
   {
     return this.http.put(this.baseURL + '/editTask' ,task )

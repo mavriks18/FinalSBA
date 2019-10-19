@@ -31,7 +31,7 @@ export class AddProjectComponent implements OnInit {
       end_date : new Date(),
       manager :""
     }
-    //this.currentDate.setDate(this.currentDate.getDate() +4)
+    this.currentDate.setDate(this.currentDate.getDate() +4)
     this.projectManagementSvc.selectedProject.end_date.setDate(this.currentDate.getDate() +1)
   }
   onAddProjectSubmit(form:NgForm)
