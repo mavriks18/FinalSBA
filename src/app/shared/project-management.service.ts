@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ErrorHandler } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import {map} from 'rxjs/operators'
 import {observable} from 'rxjs';
@@ -6,6 +6,7 @@ import {ParentTask} from './models/parent-task.model'
 import {Project} from './models/project.model'
 import {Task} from './models/task.model'
 import {Users} from './models/users.model'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -22,7 +23,7 @@ export class ProjectManagementService {
 readonly baseURL = "http://localhost:3000/projectDetails"
   constructor( private http: HttpClient) {
     this.selectedProject = {
-      _id:"",
+      
       project_id : "",
       project :"",
       priority :"",
@@ -34,7 +35,8 @@ readonly baseURL = "http://localhost:3000/projectDetails"
 
   postProjectDetail(project : Project)
   {
-    return this.http.post(this.baseURL + '/addProject', project);
+    console.log(project);
+    return this.http.post(this.baseURL   , project).subscribe((res)=>{}, (error) => {console.log(error)});
   }
 
   getProjectDetail(id : string)

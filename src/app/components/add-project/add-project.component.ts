@@ -35,7 +35,7 @@ export class AddProjectComponent implements OnInit {
   }
   onAddProjectSubmit(form:NgForm)
   {
-
+this.projectManagementSvc.postProjectDetail(form.value);
   }
   setSliderValue(prior)
   {

@@ -51,7 +51,7 @@ getUsers()
   {
     
     this.projectMgmtService.selectedProject.manager = x;
-    this.projectMgmtService.selectedTask.user_id = x;
+    //this.projectMgmtService.selectedTask.user_id = x;
     this.activeModal.close();
     
   }
