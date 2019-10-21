@@ -1,4 +1,5 @@
-export class Project {    
+
+export class Project{    
     project_id:string;
     project:string;
     manager:string;

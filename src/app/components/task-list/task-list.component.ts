@@ -38,15 +38,15 @@ export class TaskListComponent implements OnInit {
       project_id :"",
       user_id :""
    }];
-   this.projectManagementSvc.selectedProject ={
+  //  this.projectManagementSvc.selectedProject ={
    
-    project_id : "",
-    project :"",
-    priority :"",
-    start_date: new Date(),
-    end_date : new Date(),
-    manager :""
-  };
+  //   project_id : "",
+  //   project :"",
+  //   priority :"",
+  //   start_date: new Date(),
+  //   end_date : new Date(),
+  //   manager :""
+  // };
   }
   onTaskListSubmit(form: NgForm) {
 

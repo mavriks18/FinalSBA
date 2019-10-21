@@ -27,7 +27,7 @@ export class SearchProjectComponent implements OnInit {
   }
 
   getProjects(){
-    this.projectMgmtService.getAllProjects().subscribe((res)=>{
+    this.projectMgmtService.getAllProjects('start_date').subscribe((res)=>{
       this.projectMgmtService.projectList = res as Project[];          
     });
   }

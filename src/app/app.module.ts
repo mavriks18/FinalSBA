@@ -13,6 +13,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchModalComponent } from './components/search-modal/search-modal.component';
 import { SearchProjectComponent } from './components/search-project/search-project.component';
 import { SearchTaskComponent } from './components/search-task/search-task.component'
+import { DatePipe } from '@angular/common'
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,7 @@ import { SearchTaskComponent } from './components/search-task/search-task.compon
   ],
   entryComponents : [SearchModalComponent,SearchProjectComponent,
     SearchTaskComponent],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
