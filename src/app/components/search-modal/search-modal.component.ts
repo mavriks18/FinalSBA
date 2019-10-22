@@ -15,23 +15,7 @@ export class SearchModalComponent implements OnInit {
   _users : Users[];
   constructor(public activeModal: NgbActiveModal, 
     private projectMgmtService :ProjectManagementService ) { 
-    this._users = [{
-      _id:"1",
-    user_id:"12",
-    firstName    :"3",
-    lastName :"4",
-    employee_id:"5",
-    project_id :"6",
-    task_id:"7"
-     }, {
-      _id:"2",
-    user_id:"2",
-    firstName    :"3",
-    lastName :"4",
-    employee_id:"5",
-    project_id :"6",
-    task_id:"7"
-     }];
+    
   }
 
   ngOnInit() {
@@ -42,10 +26,10 @@ export class SearchModalComponent implements OnInit {
   }
 getUsers()
 {
-  this.projectMgmtService.getAllUsers().subscribe((res)=>{
+  this.projectMgmtService.getAllUsers('firstName').subscribe((res)=>{
     this.projectMgmtService.usersList = res as Users[];          
   });
-  this.projectMgmtService.usersList = this._users;
+  
 }
   saveManager(x)
   {

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {ProjectManagementService} from 'src/app/shared/project-management.service' ;
-import {NgForm} from '@angular/forms'
-import {Router} from '@angular/router'
-import { Route } from '@angular/compiler/src/core';
-import { from } from 'rxjs';
+import { ProjectManagementService } from 'src/app/shared/project-management.service';
+import { NgForm } from '@angular/forms'
+import { Router } from '@angular/router'
+import { Users } from 'src/app/shared/models/users.model'
+import { format } from 'url';
 
 @Component({
   selector: 'app-add-user',
@@ -12,21 +12,54 @@ import { from } from 'rxjs';
 })
 export class AddUserComponent implements OnInit {
 
-  constructor(private projectManagementSvc : ProjectManagementService, private router : Router) { }
-
+  constructor(private projectManagementSvc: ProjectManagementService,
+    private router: Router) { }
+  _submitText = "Add";
+  sortdirection: string;
   ngOnInit() {
     this.projectManagementSvc.selectedUser = {
-      _id :"",
-      user_id:"",
-      firstName:"",
-      lastName:"",
-      employee_id:"",
-      project_id:"",
-      task_id:""
+      user_id: "",
+      firstName: "",
+      lastName: "",
+      employee_id: "",
+      project_id: "",
+      task_id: ""
     }
+    this.refreshUserList('firstName asc');
   }
-  onAddUserSubmit(form :NgForm)
-{
-console.log('received ' + form.value.firstName + " " + form.value.lastName + " " + form.value.employee_id);
-}
+  onAddUserSubmit(form: NgForm) {
+    this.projectManagementSvc.postUserDetail(form.value);    
+    form.reset();
+    this.sortdirection = "";
+    this.refreshUserList('firstName asc');  
+    this._submitText = "Add"; 
+  }
+  OnUpdateUser(id: string, form: NgForm) {
+    this._submitText = "Update";
+    this.projectManagementSvc.getUserDetail(id).subscribe((res) => {               
+        this.projectManagementSvc.selectedUser = res[0] as Users;        
+    });
+    
+  }
+  OnDeleteUser(id: string, form:NgForm) {
+    this.projectManagementSvc.deleteUser(id);    
+    form.reset();
+    this.sortdirection = "";
+    this.refreshUserList('firstName asc');
+  }
+  onResetForm(form :NgForm) {
+    form.reset();
+  }
+  refreshUserList(sort: string) {
+    if (this.sortdirection == sort) {
+      if (sort.split(' ')[1] = 'asc') {
+        sort = sort.split(' ')[0] + ' desc';
+      }
+    }
+    this.sortdirection = sort;
+    this.projectManagementSvc.getAllUsers(sort).subscribe((res) => {
+     console.log(res);
+      this.projectManagementSvc.usersList = res as Users[];
+    });
+  }
 }

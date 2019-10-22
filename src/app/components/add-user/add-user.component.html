@@ -1,41 +1,79 @@
-<div class="container">        
-        <form #addUserForm="ngForm" (ngSubmit)="onAddUserSubmit(addUserForm)" class="form-horizontal">
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="firstName">First Name:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control width200" required #firstName="ngModel" [(ngModel)]="projectManagementSvc.selectedUser.firstName" name="firstName" id="firstName"  >
-            </div>
+<div class="container">
+  <form #addUserForm="ngForm" class="form-horizontal">
+      <div class="form-group">          
+          <div class="col-sm-10">
+            <input type="hidden" class="form-control width200" required #user_id="ngModel"
+              [(ngModel)]="projectManagementSvc.selectedUser.user_id" name="user_id" id="user_id">
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="lastName">Last Name:</label>
-            <div class="col-sm-10">          
-              <input type="text" class="form-control width200" required #lastName="ngModel" [(ngModel)] ="projectManagementSvc.selectedUser.lastName"id="lastName" name="lastName">
-            </div>
-          </div>
-          <div class="form-group">
-                <label class="control-label col-sm-2" for="employee_id">Employee ID:</label>
-                <div class="col-sm-10">          
-                  <input type="text" class="form-control width150" required #employee_id="ngModel" [(ngModel)]="projectManagementSvc.selectedUser.employee_id" id="employee_id" name="employee_id">
-                </div>
-              </div>            
-          <div class="form-group">        
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-primary">Add</button>
-              &nbsp;
-              &nbsp;
-              &nbsp;
-              <button type="button" class="btn btn-secondary">Reset</button>
-            </div>
-          </div>
-          <hr style="border: 1px solid blue"/>
-          <div>
-            <div style="float: left;">
-            <input type ="text" class="form-control width150"  id="search" name="search" placeholder="Search...">
-            </div>
-            <span class="left20Right20Margin">Sort</span>
-            <span class="left20Right20Margin"><button type="button" class="btn btn-primary">First Name</button></span>
-            <span class="left20Right20Margin"><button type="button" class="btn btn-primary">Last Name</button></span>
-            <span class="left20Right20Margin"><button type="button" class="btn btn-primary">Id Name</button></span>
-          </div>
-        </form>
+        </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="firstName">First Name:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control width200" required #firstName="ngModel"
+          [(ngModel)]="projectManagementSvc.selectedUser.firstName" name="firstName" id="firstName">
       </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="lastName">Last Name:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control width200" required #lastName="ngModel"
+          [(ngModel)]="projectManagementSvc.selectedUser.lastName" id="lastName" name="lastName">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="employee_id">Employee ID:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control width150" required #employee_id="ngModel"
+          [(ngModel)]="projectManagementSvc.selectedUser.employee_id" id="employee_id" name="employee_id">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" (click)="onAddUserSubmit(addUserForm)">{{_submitText}}</button>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <button type="button" class="btn btn-secondary" (click)="onResetForm(addUserForm)">Reset</button>
+      </div>
+    </div>
+    <hr style="border: 1px solid blue" />
+    <div>
+      <div style="float: left;">
+        <input type="text" class="form-control width150" id="search" name="search" placeholder="Search...">
+      </div>
+      <span class="left20Right20Margin">Sort</span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('firstName asc')">First Name</button></span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('lastName asc')">Last Name</button></span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('employee_id asc')">Id</button></span>
+    </div>
+    <div>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of projectManagementSvc.usersList">
+            <td>
+              <div style="background-color: lightgrey;">
+                <table>
+                  <tr>
+                    <td>{{item.firstName}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{item.lastName}}</td>
+                  </tr>
+                  <tr>
+                    <td>{{item.employee_id}}</td>
+                  </tr>                  
+                </table>
+              </div>
+            </td>            
+            <td>
+              <button type="submit" class="btn btn-primary"
+                (click)="OnUpdateUser(item.user_id,addUserForm)">Update</button>
+              <br /><br />
+              <button type="button" class="btn btn-secondary" (click)="OnDeleteUser(item.user_id, addUserForm)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+</div>

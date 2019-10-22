@@ -2,15 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectManagementService } from 'src/app/shared/project-management.service';
 import { NgForm } from '@angular/forms'
 import { Router } from '@angular/router'
-import { Route } from '@angular/compiler/src/core';
-import { from } from 'rxjs';
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap'
 import { SearchModalComponent } from '../search-modal/search-modal.component'
 import { Project } from 'src/app/shared/models/project.model'
-import { format } from 'url';
-import { async } from '@angular/core/testing';
 import {DatePipe} from '@angular/common'
-import { DatepickerViewModel } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-view-model';
+
 
 
 @Component({

@@ -21,15 +21,8 @@ export class ProjectManagementService {
 
 
   readonly baseURL = "http://localhost:3000/projectDetails"
-  constructor(private http: HttpClient) {
-    // this.selectedProject = {
-    //   project_id: "",
-    //   project: "",
-    //   priority: "",
-    //   start_date: new Date(),
-    //   end_date: new Date(),
-    //   manager: ""
-    // }
+  readonly userDetailbaseURL = "http://localhost:3000/userDetails"
+  constructor(private http: HttpClient) {    
   }
 
   postProjectDetail(project: Project) {
@@ -40,12 +33,7 @@ export class ProjectManagementService {
   {
     var params = new HttpParams().set('id', id);
     return this.http.get<Project>(this.baseURL + '/getProject', { params })
-  }
-    
-  
-  editProject(project: Project) {
-    return this.http.put(this.baseURL + '/editProject', project)
-  }
+  }  
 
   deleteProject(id: string) {
     return this.http.delete(this.baseURL + '/deleteProject/' + id);
@@ -77,23 +65,23 @@ export class ProjectManagementService {
   }
 
   postUserDetail(user: Users) {
-    return this.http.post(this.baseURL + '/addUser', user);
+    console.log(user);
+    return this.http.post(this.userDetailbaseURL + '/addUser', user).subscribe((res) => { }, (error) => { console.log(error) });
   }
 
   getUserDetail(id: string) {
-    return this.http.get(this.baseURL + '/getUser/' + id);
-  }
-
-  editUser(task: Task) {
-    return this.http.put(this.baseURL + '/editUser', task)
+    var params = new HttpParams().set('id', id);
+    return this.http.get(this.userDetailbaseURL + '/getUser' , {params});
   }
 
   deleteUser(id: string) {
-    return this.http.delete(this.baseURL + '/deleteUser/' + id);
+    var params = new HttpParams().set('id', id);
+    return this.http.delete(this.userDetailbaseURL + '/deleteUser' , {params}).subscribe((res) => { }, (error) => { console.log(error) });    
   }
 
-  getAllUsers() {
-    return this.http.get(this.baseURL + '/getAllUsers');
+  getAllUsers(sortField : string) {
+    var params = new HttpParams().set('sort', sortField);
+    return this.http.get(this.userDetailbaseURL + '/getAllUsers' , {params});
   }
 
 }
