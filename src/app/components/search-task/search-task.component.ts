@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {ProjectManagementService} from 'src/app/shared/project-management.service'
 import {Task} from 'src/app/shared/models/task.model'
 import { FormsModule } from '@angular/forms';
+import { ParentTask } from 'src/app/shared/models/parent-task.model';
 
 @Component({
   selector: 'app-search-task',
@@ -17,6 +18,7 @@ _tasks : Task[];
     }
 
   ngOnInit() {
+    this.getTasks();
   }
   
   closeUsersModal()  {
@@ -25,8 +27,9 @@ _tasks : Task[];
 
 getTasks()
 {
-  this.projectMgmtService.getAllTasks().subscribe((res)=>{
-    this.projectMgmtService.taskList = res as Task[];          
+  
+  this.projectMgmtService.getAllParentTasksForProject(this.projectMgmtService.selectedTask.project_id).subscribe((res)=>{
+    this.projectMgmtService.parentTasks = res as ParentTask[];          
   }); 
   
 }

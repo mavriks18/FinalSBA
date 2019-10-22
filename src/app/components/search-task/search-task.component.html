@@ -14,9 +14,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor = "let item of projectMgmtService.taskList">
-                <td><a (click)="saveManager(item.task_id);">{{item.task}}</a></td>
-                <td>{{item.task_id}}</td>
+              <tr *ngFor = "let item of projectMgmtService.parentTasks">
+                <td><a (click)="saveTask(item.parent_id);">{{item.parent_task}}</a></td>
+                <td>{{item.parent_id}}</td>
               </tr>
             </tbody>
           </table>

@@ -2,38 +2,37 @@ import { Injectable, ErrorHandler } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { map } from 'rxjs/operators'
 import { observable, Observable } from 'rxjs';
-import { ParentTask } from './models/parent-task.model'
 import { Project } from './models/project.model'
 import { Task } from './models/task.model'
 import { Users } from './models/users.model'
-
+import { ParentTask } from './models/parent-task.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectManagementService {
-  selectedParentTask: ParentTask;
+export class ProjectManagementService {  
   selectedProject: Project;
   selectedTask: Task;
   selectedUser: Users;
   projectList: Project[];
   taskList: Task[];
   usersList: Users[];
-
+  parentTasks : ParentTask[];
+  
 
   readonly baseURL = "http://localhost:3000/projectDetails"
   readonly userDetailbaseURL = "http://localhost:3000/userDetails"
-  constructor(private http: HttpClient) {    
+  readonly taskDetailbaseURL = "http://localhost:3000/taskDetails"
+  constructor(private http: HttpClient) {
   }
 
   postProjectDetail(project: Project) {
-    console.log(project);
+    
     return this.http.post(this.baseURL + '/addproject', project).subscribe((res) => { }, (error) => { console.log(error) });
   }
-  getProjectDetail(id)
-  {
+  getProjectDetail(id) {
     var params = new HttpParams().set('id', id);
     return this.http.get<Project>(this.baseURL + '/getProject', { params })
-  }  
+  }
 
   deleteProject(id: string) {
     return this.http.delete(this.baseURL + '/deleteProject/' + id);
@@ -42,26 +41,35 @@ export class ProjectManagementService {
     var params = new HttpParams().set('sort', sortField);
     return this.http.get(this.baseURL + '/getAllProjects', { params });
   }
+
+  postParentTaskDetail(task: Task) {    
+    return this.http.post(this.taskDetailbaseURL + '/addParentTask', task).subscribe((res) => { }, (error) => { console.log(error) });
+  }
   postTaskDetail(task: Task) {
-    return this.http.post(this.baseURL + '/addTask', task);
+    return this.http.post(this.taskDetailbaseURL + '/addTask', task).subscribe((res) => { }, (error) => { console.log(error) });
   }
 
   getTaskDetail(id: string) {
-    return this.http.get(this.baseURL + '/getTask/' + id);
+    var params = new HttpParams().set('id', id);
+    return this.http.get(this.taskDetailbaseURL + '/getTask' , {params});
   }
-  getTaskListForProject(id: string) {
-    return this.http.get(this.baseURL + '/getTaskForProjectId/' + id);
-  }
-  editTask(task: Task) {
-    return this.http.put(this.baseURL + '/editTask', task)
+
+
+  getTaskListForProject(id: string, sort :string) {   
+    return this.http.get(this.taskDetailbaseURL + '/getTaskForProjectId?id='+id+'&sort='+sort);
   }
 
   deleteTask(id: string) {
-    return this.http.delete(this.baseURL + '/deleteTask/' + id);
+    return this.http.delete(this.taskDetailbaseURL + '/deleteTask/' + id);
   }
 
   getAllTasks() {
-    return this.http.get(this.baseURL + '/getAllTasks');
+    return this.http.get(this.taskDetailbaseURL + '/getAllTasks');
+  }
+
+  getAllParentTasksForProject(projectId: string) {
+    var params = new HttpParams().set('projectId', projectId);
+    return this.http.get(this.taskDetailbaseURL + '/getAllParentTasksForProject', {params});
   }
 
   postUserDetail(user: Users) {
@@ -71,17 +79,17 @@ export class ProjectManagementService {
 
   getUserDetail(id: string) {
     var params = new HttpParams().set('id', id);
-    return this.http.get(this.userDetailbaseURL + '/getUser' , {params});
+    return this.http.get(this.userDetailbaseURL + '/getUser', { params });
   }
 
   deleteUser(id: string) {
     var params = new HttpParams().set('id', id);
-    return this.http.delete(this.userDetailbaseURL + '/deleteUser' , {params}).subscribe((res) => { }, (error) => { console.log(error) });    
+    return this.http.delete(this.userDetailbaseURL + '/deleteUser', { params }).subscribe((res) => { }, (error) => { console.log(error) });
   }
 
-  getAllUsers(sortField : string) {
+  getAllUsers(sortField: string) {
     var params = new HttpParams().set('sort', sortField);
-    return this.http.get(this.userDetailbaseURL + '/getAllUsers' , {params});
+    return this.http.get(this.userDetailbaseURL + '/getAllUsers', { params });
   }
 
 }

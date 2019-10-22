@@ -15,7 +15,7 @@
         </thead>
         <tbody>
           <tr *ngFor = "let item of projectMgmtService.projectList">
-            <td><a (click)="saveManager(item.project_id);">{{item.project}}</a></td>
+            <td><a (click)="saveProject(item.project_id);">{{item.project}}</a></td>
             <td>{{item.project_id}}</td>
           </tr>
         </tbody>

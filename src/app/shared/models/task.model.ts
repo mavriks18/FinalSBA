@@ -1,5 +1,5 @@
 export class Task {
-    _id : string;
+    
     task_id: string;
     parent_id: string;
     task : string;
@@ -9,4 +9,5 @@ export class Task {
     status : string;
     project_id: string;
     user_id : string;
+    is_parent : boolean;        
 }
