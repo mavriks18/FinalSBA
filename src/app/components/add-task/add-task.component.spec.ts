@@ -1,14 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {  FormsModule } from '@angular/forms'
 import { AddTaskComponent } from './add-task.component';
-
+import { HttpClientModule } from '@angular/common/http';
+import { ProjectManagementService } from 'src/app/shared/project-management.service';
+import { DatePipe } from '@angular/common'
 describe('AddTaskComponent', () => {
   let component: AddTaskComponent;
   let fixture: ComponentFixture<AddTaskComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddTaskComponent ]
+      imports : [FormsModule,HttpClientModule],  
+      declarations: [ AddTaskComponent ],
+      providers :[DatePipe,ProjectManagementService]
     })
     .compileComponents();
   }));

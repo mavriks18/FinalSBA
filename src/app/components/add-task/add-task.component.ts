@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectManagementService } from 'src/app/shared/project-management.service';
-import { NgForm } from '@angular/forms'
+import { NgForm , FormsModule} from '@angular/forms'
 import { Router } from '@angular/router'
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap'
 import { SearchModalComponent } from '../search-modal/search-modal.component'
@@ -11,7 +11,7 @@ import { Task } from 'src/app/shared/models/task.model'
 @Component({
   selector: 'app-add-task',
   templateUrl: './add-task.component.html',
-  styleUrls: ['./add-task.component.css']
+  styleUrls: ['./add-task.component.css'],  
 })
 
 export class AddTaskComponent implements OnInit {
@@ -22,7 +22,7 @@ export class AddTaskComponent implements OnInit {
   isupdateRoute: boolean;
   commandtext: string;
   constructor(private projectManagementSvc: ProjectManagementService,
-    private modalService: NgbModal, private router: Router, private datepipe: DatePipe) { }
+    private modalService: NgbModal, private formsModule :FormsModule, private datepipe: DatePipe) { }
   modalOptions: NgbModalOptions;
   chosenManager: string;
   _taskid: string;

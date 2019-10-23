@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectManagementService } from 'src/app/shared/project-management.service';
 import { NgForm } from '@angular/forms'
-import { Router } from '@angular/router'
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap'
 import { SearchModalComponent } from '../search-modal/search-modal.component'
 import { Project } from 'src/app/shared/models/project.model'
@@ -18,8 +17,10 @@ export class AddProjectComponent implements OnInit {
   modalOptions: NgbModalOptions;
   chosenManager: string;
   isLoadingAfterUpdate: boolean;
-  constructor(private projectManagementSvc: ProjectManagementService,
-    private modalService: NgbModal, private router: Router, private datepipe: DatePipe) {
+  constructor(
+    private projectManagementSvc: ProjectManagementService,
+    private modalService: NgbModal,     
+     private datepipe: DatePipe) {
     this.modalOptions = {
       backdrop: 'static',
       backdropClass: 'customBackdrop'
@@ -28,7 +29,7 @@ export class AddProjectComponent implements OnInit {
   currentDate: Date = new Date();
   closeResult: string;
   sortdirection: string;
-  _submitText = "Add Project"
+  _submitText = "Add Project"  
   ngOnInit() {
     this.projectManagementSvc.selectedProject = {
       project_id: "",
@@ -45,6 +46,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   onAddProjectSubmit(form: NgForm) {
+    console.log(form);
     if (form.valid) 
     {
       this.projectManagementSvc.postProjectDetail(form.value);      
@@ -57,57 +59,25 @@ export class AddProjectComponent implements OnInit {
     this.projectManagementSvc.selectedProject.priority = prior;
   }
 
-  open(content) {
-    this.modalService.open(content, this.modalOptions).result.then((result) => {
-      this.closeResult = 'Closed with: ${result}';
-    }, (reason) => {
-      this.closeResult = 'Dismissed ${this.getDismissReason(reason)}';
-    });
-  }
+  
   openModal() {
-    const modalRef = this.modalService.open(SearchModalComponent);
-    modalRef.componentInstance.my_modal_title = 'I your title';
-    modalRef.componentInstance.my_modal_content = 'I am your content';
+    const modalRef = this.modalService.open(SearchModalComponent);    
   }
-  // resetProjectForm(form?: NgForm) {
-  //   if (form) {
-  //     form.reset();
-  //     this.projectManagementSvc.selectedProject = {
+  
 
-  //       project_id: "",
-  //       project: "",
-  //       priority: "",
-  //       start_date: new Date(),
-  //       end_date: new Date(),
-  //       manager: ""
-  //     }
-  //   }
-  // }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-  refreshProjectList(sortOption: string) {
+  refreshProjectList(sortOption: string)  {
     if (this.sortdirection == sortOption) {
       if (sortOption.split(' ')[1] = 'asc') {
         sortOption = sortOption.split(' ')[0] + ' desc';
       }
     }
     this.sortdirection = sortOption;
-
     this.projectManagementSvc.getAllProjects(sortOption).subscribe((res) => {
       this.projectManagementSvc.projectList = res as Project[];
     });
   }
-
   OnUpdateProject(id: string, form: NgForm) {
-    this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {
-      //this._project = res as Project;
+    this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {      
       this.projectManagementSvc.selectedProject = res[0] as Project;
       form.setValue({
         project_id: this.projectManagementSvc.selectedProject.project_id,

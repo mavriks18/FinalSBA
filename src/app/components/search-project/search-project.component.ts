@@ -13,8 +13,6 @@ import { Task } from 'src/app/shared/models/task.model';
 })
 export class SearchProjectComponent implements OnInit {
 
-  _projects : Project[];
-
   constructor(public activeModal: NgbActiveModal, 
     private projectMgmtService :ProjectManagementService ) { 
 

@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {FormsModule} from '@angular/forms'
 
 import { AddUserComponent } from './add-user.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ProjectManagementService } from 'src/app/shared/project-management.service';
 
 describe('AddUserComponent', () => {
   let component: AddUserComponent;
@@ -8,7 +11,9 @@ describe('AddUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddUserComponent ]
+      imports : [FormsModule,HttpClientModule],   
+      declarations: [ AddUserComponent ],
+      providers :[ProjectManagementService]
     })
     .compileComponents();
   }));

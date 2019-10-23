@@ -7,7 +7,7 @@ import { AddProjectComponent } from './components/add-project/add-project.compon
 import { AddTaskComponent } from './components/add-task/add-task.component';
 import { TaskListComponent } from './components/task-list/task-list.component';
 import {HttpClientModule} from '@angular/common/http'
-import {FormsModule, ReactiveFormsModule} from '@angular/forms'
+import {FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { SearchModalComponent } from './components/search-modal/search-modal.component';
 import { SearchProjectComponent } from './components/search-project/search-project.component';

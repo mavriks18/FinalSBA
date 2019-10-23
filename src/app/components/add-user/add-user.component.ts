@@ -12,9 +12,9 @@ import { format } from 'url';
 })
 export class AddUserComponent implements OnInit {
 
-  constructor(private projectManagementSvc: ProjectManagementService,
-    private router: Router) { }
+  constructor(private projectManagementSvc: ProjectManagementService) { }
   _submitText = "Add";
+  isLoadingAfterUpdate : boolean;
   sortdirection: string;
   ngOnInit() {
     this.projectManagementSvc.selectedUser = {
@@ -26,14 +26,18 @@ export class AddUserComponent implements OnInit {
       task_id: ""
     }
     this.refreshUserList('firstName asc');
+    this.isLoadingAfterUpdate = false;
   }
   onAddUserSubmit(form: NgForm) {
+    
     if (form.valid) {
+    
       this.projectManagementSvc.postUserDetail(form.value);
       form.reset();
       this.sortdirection = "";
       this.refreshUserList('firstName asc');
       this._submitText = "Add";
+      this.isLoadingAfterUpdate = true;
     }
   }
   OnUpdateUser(id: string, form: NgForm) {
