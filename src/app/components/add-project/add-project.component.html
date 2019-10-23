@@ -1,9 +1,14 @@
 <div class="container">
-  <form #addProjectFrom="ngForm"  class="form-horizontal">    <div class="form-group">    
+  <form #addProjectFrom="ngForm"  class="form-horizontal">    
+    <div class="form-group">    
     <label class="control-label col-sm-2" for="project">Project:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control width200" required #project="ngModel"
-          [(ngModel)]="this.projectManagementSvc.selectedProject.project"   name="project" id="project">
+          [(ngModel)]="this.projectManagementSvc.selectedProject.project"   name="project" id="project"
+          [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid }">
+      </div>
+      <div *ngIf="!isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid" class="invalid-details">
+        <div *ngIf="project.errors.required">Project is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -24,7 +29,7 @@
     <div class="form-group">
       <label class="control-label col-sm-2" for="priority">Priority: </label>
       <div class="col-sm-10">
-        <input type="range" class="form-contro" style="width:300px" min="0" max="30" step="1" required
+        <input type="range" class="form-contro" style="width:300px" min="0" max="30" step="1" 
           #priority="ngModel" [(ngModel)]="this.projectManagementSvc.selectedProject.priority"
           ng-change="setSliderValue(this.value)" name="priority" id="priority"></div>
       <span style="float:right; margin-right: 340px;">{{this.projectManagementSvc.selectedProject.priority}}</span>
@@ -33,7 +38,7 @@
       <label class="control-label col-sm-2" for="manager">Manager:</label>
       <div class="col-sm-10">
         <div style="float: left;">
-          <input type="text" readonly class="form-control" required #manager="ngModel"
+          <input type="text" readonly class="form-control" #manager="ngModel"
             [(ngModel)]="this.projectManagementSvc.selectedProject.manager" name="manager" id="manager"
             value="{{this.projectManagementSvc.selectedProject.manager}}">
         </div>
@@ -43,6 +48,7 @@
     </div>
     <div class="form-group">
       <button type="submit" (click)="onAddProjectSubmit(addProjectFrom)" class="btn btn-primary">{{_submitText}}</button>
+      &nbsp; <button type="reset" class="btn btn-secondary">Reset</button>
     </div>
     <hr style="border: 1px solid blue" />
     <div>

@@ -15,6 +15,7 @@ import { Task } from 'src/app/shared/models/task.model'
 })
 
 export class AddTaskComponent implements OnInit {
+  isLoadingAfterUpdate: boolean;
   closeResult: string;
   currentDate: Date = new Date();
   isparent: boolean;
@@ -43,7 +44,7 @@ export class AddTaskComponent implements OnInit {
       is_parent: false
     }
     this.refreshTask();
-
+    this.isLoadingAfterUpdate = false;
   }
   refreshTask() {
     if (this._taskid != null && this._taskid != '') {
@@ -82,38 +83,28 @@ export class AddTaskComponent implements OnInit {
     const modalRef = this.modalService.open(SearchTaskComponent);
   }
 
-  onAddTaskSubmit(form: NgForm) {
-    if (this.isparent) {
-      this.projectManagementSvc.postParentTaskDetail(form.value);
-      form.reset();
-      this.isparent = false;
-    }
-    else {
-      
-        this.projectManagementSvc.postTaskDetail(form.value);        
-        form.reset();    
+  onAddTaskSubmit(form: NgForm) {    
+    if (form.valid) {
+      if (this.isparent) {
+        this.projectManagementSvc.postParentTaskDetail(form.value);
+        this.isparent = false;
+      }
+      else {
+
+        this.projectManagementSvc.postTaskDetail(form.value);
         this.isupdateRoute = false;
+      }
+      this.isLoadingAfterUpdate = true;
+      form.resetForm();
     }
   }
   resetTaskForm(form?: NgForm) {
     if (form) {
-      form.reset();
-      this.projectManagementSvc.selectedTask = {
-        parent_id: "",
-        task_id: "",
-        task: "",
-        start_date: new Date(),
-        end_date: new Date(),
-        priority: "",
-        status: "",
-        project_id: "",
-        user_id: "",
-        is_parent: false
-      }
+      form.resetForm();
     }
   }
 
-  onCheckedChange(checked: boolean, form: NgForm) {    
+  onCheckedChange(checked: boolean, form: NgForm) {
     this.isparent = checked;
   }
 

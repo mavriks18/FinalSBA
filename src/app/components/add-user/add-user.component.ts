@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectManagementService } from 'src/app/shared/project-management.service';
-import { NgForm } from '@angular/forms'
+import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { Users } from 'src/app/shared/models/users.model'
 import { format } from 'url';
@@ -28,28 +28,27 @@ export class AddUserComponent implements OnInit {
     this.refreshUserList('firstName asc');
   }
   onAddUserSubmit(form: NgForm) {
-    this.projectManagementSvc.postUserDetail(form.value);    
-    form.reset();
-    this.sortdirection = "";
-    this.refreshUserList('firstName asc');  
-    this._submitText = "Add"; 
+    if (form.valid) {
+      this.projectManagementSvc.postUserDetail(form.value);
+      form.reset();
+      this.sortdirection = "";
+      this.refreshUserList('firstName asc');
+      this._submitText = "Add";
+    }
   }
   OnUpdateUser(id: string, form: NgForm) {
     this._submitText = "Update";
-    this.projectManagementSvc.getUserDetail(id).subscribe((res) => {               
-        this.projectManagementSvc.selectedUser = res[0] as Users;        
+    this.projectManagementSvc.getUserDetail(id).subscribe((res) => {
+      this.projectManagementSvc.selectedUser = res[0] as Users;
     });
-    
+
   }
-  OnDeleteUser(id: string, form:NgForm) {
-    this.projectManagementSvc.deleteUser(id);    
+  OnDeleteUser(id: string, form: NgForm) {
+    this.projectManagementSvc.deleteUser(id);
     form.reset();
     this.sortdirection = "";
     this.refreshUserList('firstName asc');
-  }
-  onResetForm(form :NgForm) {
-    form.reset();
-  }
+  }  
   refreshUserList(sort: string) {
     if (this.sortdirection == sort) {
       if (sort.split(' ')[1] = 'asc') {
@@ -58,7 +57,6 @@ export class AddUserComponent implements OnInit {
     }
     this.sortdirection = sort;
     this.projectManagementSvc.getAllUsers(sort).subscribe((res) => {
-     console.log(res);
       this.projectManagementSvc.usersList = res as Users[];
     });
   }

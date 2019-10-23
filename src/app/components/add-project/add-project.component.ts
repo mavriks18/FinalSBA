@@ -5,7 +5,7 @@ import { Router } from '@angular/router'
 import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap'
 import { SearchModalComponent } from '../search-modal/search-modal.component'
 import { Project } from 'src/app/shared/models/project.model'
-import {DatePipe} from '@angular/common'
+import { DatePipe } from '@angular/common'
 
 
 
@@ -17,7 +17,7 @@ import {DatePipe} from '@angular/common'
 export class AddProjectComponent implements OnInit {
   modalOptions: NgbModalOptions;
   chosenManager: string;
-  
+  isLoadingAfterUpdate: boolean;
   constructor(private projectManagementSvc: ProjectManagementService,
     private modalService: NgbModal, private router: Router, private datepipe: DatePipe) {
     this.modalOptions = {
@@ -29,7 +29,7 @@ export class AddProjectComponent implements OnInit {
   closeResult: string;
   sortdirection: string;
   _submitText = "Add Project"
-  ngOnInit() {    
+  ngOnInit() {
     this.projectManagementSvc.selectedProject = {
       project_id: "",
       project: "",
@@ -38,16 +38,20 @@ export class AddProjectComponent implements OnInit {
       end_date: new Date(),
       manager: ""
     }
-    
-    
+    this.isLoadingAfterUpdate = false;
+
     this.refreshProjectList('start_date');
 
   }
 
-  onAddProjectSubmit(form: NgForm) {    
-    this.projectManagementSvc.postProjectDetail(form.value);    
-    form.reset();
-    this.refreshProjectList('start_date');   
+  onAddProjectSubmit(form: NgForm) {
+    if (form.valid) 
+    {
+      this.projectManagementSvc.postProjectDetail(form.value);      
+      form.resetForm();      
+      this.refreshProjectList('start_date');    
+      this.isLoadingAfterUpdate = true;  
+    }
   }
   setSliderValue(prior) {
     this.projectManagementSvc.selectedProject.priority = prior;
@@ -65,20 +69,20 @@ export class AddProjectComponent implements OnInit {
     modalRef.componentInstance.my_modal_title = 'I your title';
     modalRef.componentInstance.my_modal_content = 'I am your content';
   }
-  resetProjectForm(form?: NgForm) {
-    if (form) {
-      form.reset();
-      this.projectManagementSvc.selectedProject = {
+  // resetProjectForm(form?: NgForm) {
+  //   if (form) {
+  //     form.reset();
+  //     this.projectManagementSvc.selectedProject = {
 
-        project_id: "",
-        project: "",
-        priority: "",
-        start_date: new Date(),
-        end_date: new Date(),
-        manager: ""
-      }
-    }
-  }
+  //       project_id: "",
+  //       project: "",
+  //       priority: "",
+  //       start_date: new Date(),
+  //       end_date: new Date(),
+  //       manager: ""
+  //     }
+  //   }
+  // }
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
       return 'by pressing ESC';
@@ -101,21 +105,21 @@ export class AddProjectComponent implements OnInit {
     });
   }
 
-   OnUpdateProject(id: string, form : NgForm)
-   {
-        this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {               
-          //this._project = res as Project;
-          this.projectManagementSvc.selectedProject = res[0] as Project;            
-            form.setValue({
-              project_id : this.projectManagementSvc.selectedProject.project_id,
-            project: this.projectManagementSvc.selectedProject.project,
-            priority: this.projectManagementSvc.selectedProject.priority,
-            start_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.start_date, 'yyyy-MM-dd'),
-            end_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.end_date, 'yyyy-MM-dd'),
-            manager: this.projectManagementSvc.selectedProject.manager});
-          });
-          this._submitText = "Update Project";
-         form.reset();
+  OnUpdateProject(id: string, form: NgForm) {
+    this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {
+      //this._project = res as Project;
+      this.projectManagementSvc.selectedProject = res[0] as Project;
+      form.setValue({
+        project_id: this.projectManagementSvc.selectedProject.project_id,
+        project: this.projectManagementSvc.selectedProject.project,
+        priority: this.projectManagementSvc.selectedProject.priority,
+        start_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.start_date, 'yyyy-MM-dd'),
+        end_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.end_date, 'yyyy-MM-dd'),
+        manager: this.projectManagementSvc.selectedProject.manager
+      });
+    });
+    this._submitText = "Update Project";
+    form.reset();
 
-   }
   }
+}

@@ -1,30 +1,42 @@
 <div class="container">
   <form #addUserForm="ngForm" class="form-horizontal">
-      <div class="form-group">          
-          <div class="col-sm-10">
-            <input type="hidden" class="form-control width200" required #user_id="ngModel"
-              [(ngModel)]="projectManagementSvc.selectedUser.user_id" name="user_id" id="user_id">
-          </div>
-        </div>
+    <div class="form-group">
+      <div class="col-sm-10">
+        <input type="hidden" class="form-control width200" required #user_id="ngModel"
+          [(ngModel)]="projectManagementSvc.selectedUser.user_id" name="user_id" id="user_id">
+      </div>
+    </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="firstName">First Name:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control width200" required #firstName="ngModel"
-          [(ngModel)]="projectManagementSvc.selectedUser.firstName" name="firstName" id="firstName">
+          [(ngModel)]="projectManagementSvc.selectedUser.firstName" name="firstName" id="firstName"
+          [ngClass]="{ 'is-invalid': addUserForm.submitted && firstName.invalid }">
+      </div>
+      <div *ngIf="addUserForm.submitted && firstName.invalid" class="invalid-details">
+        <div *ngIf="firstName.errors.required">First Name is required</div>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="lastName">Last Name:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control width200" required #lastName="ngModel"
-          [(ngModel)]="projectManagementSvc.selectedUser.lastName" id="lastName" name="lastName">
+          [(ngModel)]="projectManagementSvc.selectedUser.lastName" id="lastName" name="lastName"
+          [ngClass]="{ 'is-invalid': addUserForm.submitted && lastName.invalid }">
+      </div>
+      <div *ngIf="addUserForm.submitted && lastName.invalid" class="invalid-details">
+        <div *ngIf="lastName.errors.required">Last Name is required</div>
       </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2" for="employee_id">Employee ID:</label>
       <div class="col-sm-10">
         <input type="text" class="form-control width150" required #employee_id="ngModel"
-          [(ngModel)]="projectManagementSvc.selectedUser.employee_id" id="employee_id" name="employee_id">
+          [(ngModel)]="projectManagementSvc.selectedUser.employee_id" id="employee_id" name="employee_id"
+          [ngClass]="{ 'is-invalid': addUserForm.submitted && employee_id.invalid }">
+      </div>
+      <div *ngIf="addUserForm.submitted && employee_id.invalid" class="invalid-details">
+        <div *ngIf="employee_id.errors.required">Last Name is required</div>
       </div>
     </div>
     <div class="form-group">
@@ -33,7 +45,7 @@
         &nbsp;
         &nbsp;
         &nbsp;
-        <button type="button" class="btn btn-secondary" (click)="onResetForm(addUserForm)">Reset</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
       </div>
     </div>
     <hr style="border: 1px solid blue" />
@@ -42,9 +54,12 @@
         <input type="text" class="form-control width150" id="search" name="search" placeholder="Search...">
       </div>
       <span class="left20Right20Margin">Sort</span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('firstName asc')">First Name</button></span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('lastName asc')">Last Name</button></span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshUserList('employee_id asc')">Id</button></span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary"
+          (click)="refreshUserList('firstName asc')">First Name</button></span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary"
+          (click)="refreshUserList('lastName asc')">Last Name</button></span>
+      <span class="left20Right20Margin"><button type="button" class="btn btn-primary"
+          (click)="refreshUserList('employee_id asc')">Id</button></span>
     </div>
     <div>
       <table class="table">
@@ -61,15 +76,16 @@
                   </tr>
                   <tr>
                     <td>{{item.employee_id}}</td>
-                  </tr>                  
+                  </tr>
                 </table>
               </div>
-            </td>            
+            </td>
             <td>
               <button type="submit" class="btn btn-primary"
                 (click)="OnUpdateUser(item.user_id,addUserForm)">Update</button>
               <br /><br />
-              <button type="button" class="btn btn-secondary" (click)="OnDeleteUser(item.user_id, addUserForm)">Delete</button>
+              <button type="button" class="btn btn-secondary"
+                (click)="OnDeleteUser(item.user_id, addUserForm)">Delete</button>
             </td>
           </tr>
         </tbody>
