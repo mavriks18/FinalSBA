@@ -12,7 +12,7 @@ import { Task } from 'src/app/shared/models/task.model';
   styleUrls: ['./search-project.component.css']
 })
 export class SearchProjectComponent implements OnInit {
-
+isActive :boolean;
   constructor(public activeModal: NgbActiveModal, 
     private projectMgmtService :ProjectManagementService ) { 
 
@@ -22,7 +22,8 @@ export class SearchProjectComponent implements OnInit {
     this.getProjects();
   }
   closeUsersModal()  {
-    this.activeModal.close();        
+    this.activeModal.close();    
+    this.isActive = false;    
   }
 
   getProjects(){

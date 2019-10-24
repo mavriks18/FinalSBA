@@ -28,11 +28,11 @@ export class ProjectManagementService {
 
   postProjectDetail(project: Project) {
     
-    return this.http.post(this.baseURL + '/addproject', project).subscribe((res) => { }, (error) => { console.log(error) });
+    return this.http.post(this.baseURL + '/addproject', project).subscribe((res) => { }, (error) => {  });
   }  
   postSuspendProject(id:string) {    
     var params = new HttpParams().set('projectId', id);   
-    return this.http.get(this.baseURL + '/suspendProject', { params }).subscribe((res)=>{ console.log(res)}, (error) => {console.log(error)});       
+    return this.http.get(this.baseURL + '/suspendProject', { params }).subscribe((res)=>{ }, (error) => {});       
   } 
   getProjectDetail(id) {
     var params = new HttpParams().set('id', id);
@@ -44,10 +44,10 @@ export class ProjectManagementService {
   }
 
   postParentTaskDetail(task: Task) {    
-    return this.http.post(this.taskDetailbaseURL + '/addParentTask', task).subscribe((res) => { }, (error) => { console.log(error) });
+    return this.http.post(this.taskDetailbaseURL + '/addParentTask', task).subscribe((res) => { }, (error) => {  });
   }
   postTaskDetail(task: Task) {
-    return this.http.post(this.taskDetailbaseURL + '/addTask', task).subscribe((res) => { }, (error) => { console.log(error) });
+    return this.http.post(this.taskDetailbaseURL + '/addTask', task).subscribe((res) => { }, (error) => {  });
   }
 
   getTaskDetail(id: string) {
@@ -61,21 +61,21 @@ export class ProjectManagementService {
   }
 
   deleteTask(id: string) {
-    return this.http.delete(this.taskDetailbaseURL + '/deleteTask/' + id);
+    var params = new HttpParams().set('id', id);
+    return this.http.delete(this.taskDetailbaseURL + '/deleteTask', { params }).subscribe((res) => { }, (error) => { });
   }
 
-  getAllTasks() {
-    return this.http.get(this.taskDetailbaseURL + '/getAllTasks');
-  }
+  // getAllTasks() {
+  //   return this.http.get(this.taskDetailbaseURL + '/getAllTasks');
+  // }
 
   getAllParentTasksForProject(projectId: string) {
     var params = new HttpParams().set('projectId', projectId);
     return this.http.get(this.taskDetailbaseURL + '/getAllParentTasksForProject', {params});
   }
 
-  postUserDetail(user: Users) {
-    console.log(user);
-    return this.http.post(this.userDetailbaseURL + '/addUser', user).subscribe((res) => { }, (error) => { console.log(error) });
+  postUserDetail(user: Users) {    
+    return this.http.post(this.userDetailbaseURL + '/addUser', user).subscribe((res) => { }, (error) => {  });
   }
 
   getUserDetail(id: string) {
@@ -85,7 +85,7 @@ export class ProjectManagementService {
 
   deleteUser(id: string) {
     var params = new HttpParams().set('id', id);
-    return this.http.delete(this.userDetailbaseURL + '/deleteUser', { params }).subscribe((res) => { }, (error) => { console.log(error) });
+    return this.http.delete(this.userDetailbaseURL + '/deleteUser', { params }).subscribe((res) => { }, (error) => {  });
   }
 
   getAllUsers(sortField: string) {

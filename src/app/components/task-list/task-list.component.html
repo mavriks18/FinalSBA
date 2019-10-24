@@ -11,14 +11,14 @@
   Sort Task By :
   <div class="form-group">
     <div class="input-group">
-      <button class="form-control btn btn-primary" (click)="refreshGrid(addTaskForm,'start_date asc')">Start
+      <button class="form-control btn btn-primary" (click)="refreshGrid(addTaskForm.value,'start_date asc')">Start
         Date</button>
-      &nbsp; <button class="form-control btn btn-primary" (click)="refreshGrid(addTaskForm,'end_date asc')">End
+      &nbsp; <button class="form-control btn btn-primary" (click)="refreshGrid(addTaskForm.value,'end_date asc')">End
         Date</button>
       &nbsp; <button class=" form-control btn btn-primary"
-        (click)="refreshGrid(addTaskForm,'priority asc')">Priority</button>
+        (click)="refreshGrid(addTaskForm.value,'priority asc')">Priority</button>
       &nbsp; <button class="form-control btn btn-primary"
-        (click)="refreshGrid(addTaskForm,'status asc')">Completed</button>
+        (click)="refreshGrid(addTaskForm.value,'status asc')">Completed</button>
     </div>
   </div>
   
@@ -58,7 +58,7 @@
             <button class="btn btn-primary" (click)="onEditTask(item.task_id)">Edit</button>
           </td>
           <td>
-            <button class="btn btn-secondary" (click)="onEndTask(item.task_id)">End Task</button>
+            <button class="btn btn-secondary" (click)="onEndTask(item.task_id, item.project_id)">End Task</button>
           </td>
         </tr>
       </tbody>

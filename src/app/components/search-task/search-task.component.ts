@@ -12,6 +12,7 @@ import { ParentTask } from 'src/app/shared/models/parent-task.model';
 })
 export class SearchTaskComponent implements OnInit {
   _tasks: Task[];
+  isActive :boolean;
   constructor(public activeModal: NgbActiveModal,
     private projectMgmtService: ProjectManagementService) {
 
@@ -23,6 +24,7 @@ export class SearchTaskComponent implements OnInit {
 
   closeUsersModal() {
     this.activeModal.close();
+    this.isActive = false;
   }
 
   getTasks() {

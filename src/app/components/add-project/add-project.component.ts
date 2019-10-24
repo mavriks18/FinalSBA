@@ -17,11 +17,11 @@ export class AddProjectComponent implements OnInit {
   modalOptions: NgbModalOptions;
   chosenManager: string;
   isLoadingAfterUpdate: boolean;
-  updateSuccessful : boolean;
+  updateSuccessful: boolean;
   constructor(
     private projectManagementSvc: ProjectManagementService,
-    private modalService: NgbModal,     
-     private datepipe: DatePipe) {
+    private modalService: NgbModal,
+    private datepipe: DatePipe) {
     this.modalOptions = {
       backdrop: 'static',
       backdropClass: 'customBackdrop'
@@ -30,8 +30,15 @@ export class AddProjectComponent implements OnInit {
   currentDate: Date = new Date();
   closeResult: string;
   sortdirection: string;
-  _submitText = "Add Project"  
+  _submitText = "Add Project"
   ngOnInit() {
+    this.resetToDefault();
+    this.isLoadingAfterUpdate = false;
+    this.updateSuccessful = false;
+    this.refreshProjectList('start_date');
+
+  }
+  resetToDefault() {
     this.projectManagementSvc.selectedProject = {
       project_id: "",
       project: "",
@@ -41,38 +48,31 @@ export class AddProjectComponent implements OnInit {
       manager: "",
       status
     }
-    this.isLoadingAfterUpdate = false;
-  this.updateSuccessful = false;
-    this.refreshProjectList('start_date');
-
   }
 
-  onAddProjectSubmit(form: NgForm) {    
-    if (form.valid) 
-    {
+  onAddProjectSubmit(value, valid) {
+    if (valid) {
 
-      this.projectManagementSvc.postProjectDetail(form.value);      
-      form.resetForm();      
-      this.refreshProjectList('start_date');    
-      this.isLoadingAfterUpdate = true;  
+      this.projectManagementSvc.postProjectDetail(value);
+      this.resetToDefault();
+      this.refreshProjectList('start_date');
+      this.isLoadingAfterUpdate = true;
     }
   }
   setSliderValue(prior) {
     this.projectManagementSvc.selectedProject.priority = prior;
   }
-  onSuspendProject(id: string)
-  {    
+  onSuspendProject(id: string) {
     this.projectManagementSvc.postSuspendProject(id)
-      this.updateSuccessful = true;    
-    
-  }
-  
-  openModal() {
-    const modalRef = this.modalService.open(SearchModalComponent);    
-  }
-  
+    this.updateSuccessful = true;
 
-  refreshProjectList(sortOption: string)  {
+  }
+
+  openModal() {
+    const modalRef = this.modalService.open(SearchModalComponent);
+  }
+
+  refreshProjectList(sortOption: string) {
     if (this.sortdirection == sortOption) {
       if (sortOption.split(' ')[1] = 'asc') {
         sortOption = sortOption.split(' ')[0] + ' desc';
@@ -80,24 +80,16 @@ export class AddProjectComponent implements OnInit {
     }
     this.sortdirection = sortOption;
     this.projectManagementSvc.getAllProjects(sortOption).subscribe((res) => {
-      this.projectManagementSvc.projectList = res as Project[];      
+      this.projectManagementSvc.projectList = res as Project[];
     });
   }
-  OnUpdateProject(id: string, form: NgForm) {
-    this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {      
+  OnUpdateProject(id: string) {
+    this.projectManagementSvc.getProjectDetail(id).subscribe((res) => {
       this.projectManagementSvc.selectedProject = res[0] as Project;
-      form.setValue({
-        project_id: this.projectManagementSvc.selectedProject.project_id,
-        project: this.projectManagementSvc.selectedProject.project,
-        priority: this.projectManagementSvc.selectedProject.priority,
-        start_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.start_date, 'yyyy-MM-dd'),
-        end_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.end_date, 'yyyy-MM-dd'),
-        manager: this.projectManagementSvc.selectedProject.manager,
-        status : this.projectManagementSvc.selectedProject.status
-      });
+
     });
     this._submitText = "Update Project";
-    form.reset();
+    this.resetToDefault();
 
   }
 }

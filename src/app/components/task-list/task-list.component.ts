@@ -35,32 +35,28 @@ export class TaskListComponent implements OnInit {
       user_id: "",
       is_parent: false
     };
-    
-  }
-  open(content) {
-    this.modalService.open(content, this.modalOptions).result.then((result) => {
-      this.closeResult = 'Closed with: ${result}';
-    }, (reason) => {
-      this.closeResult = 'Dismissed ${this.getDismissReason(reason)}';
-    });
-  }
+    this.projectManagementSvc.taskList = [];
+  }  
   openProjectModal() {
     const modalRef = this.modalService.open(SearchProjectComponent);
   }
 
-  refreshGrid(form:NgForm, sort:string){
+  refreshGrid(value, sort:string){
     if (this.sortdirection == sort) {
       if (sort.split(' ')[1] = 'asc') {
         sort = sort.split(' ')[0] + ' desc';
       }
     }
-    this.sortdirection = sort;
-    console.log(form.value.project_id)
-    this.projectManagementSvc.getTaskListForProject(form.value.project_id, sort).subscribe((res) => {      
+    this.sortdirection = sort;    
+    this.projectManagementSvc.getTaskListForProject(value.project_id, sort).subscribe((res) => {      
       this.projectManagementSvc.taskList = res as Task[];
     });
   }
-
+  onEndTask(id:string, project_id:string)
+  {
+    this.projectManagementSvc.deleteTask(id);
+    this.refreshGrid({"project_id" :project_id },  "start_date asc");
+  }
   onEditTask(id:string)
   { 
     this.projectManagementSvc.getTaskDetail(id).subscribe((res) => {               

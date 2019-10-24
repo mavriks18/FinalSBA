@@ -36,7 +36,7 @@
   <div class="form-group">
     <div class="input-group">
       <button type="submit" class="form-control btn btn-primary"
-        (click)="onAddUserSubmit(addUserForm)">{{_submitText}}</button>
+        (click)="onAddUserSubmit(addUserForm.value, addUserForm.valid)">{{_submitText}}</button>
       &nbsp;
       <button type="reset" class="form-control btn btn-secondary">Reset</button>
     </div>
@@ -79,10 +79,10 @@
           </td>
           <td>
             <button type="submit" class="btn btn-primary"
-              (click)="OnUpdateUser(item.user_id,addUserForm)">Update</button>
+              (click)="OnUpdateUser(item.user_id)">Update</button>
             <br /><br />
             <button type="button" class="btn btn-secondary"
-              (click)="OnDeleteUser(item.user_id, addUserForm)">Delete</button>
+              (click)="OnDeleteUser(item.user_id)">Delete</button>
           </td>
         </tr>
       </tbody>

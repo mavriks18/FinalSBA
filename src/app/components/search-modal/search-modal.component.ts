@@ -13,6 +13,7 @@ export class SearchModalComponent implements OnInit {
   // @Input() my_modal_title;
   // @Input() my_modal_content;
   _users: Users[];
+  isActive : false;
   constructor(public activeModal: NgbActiveModal,
     private projectMgmtService: ProjectManagementService) {
 
@@ -23,6 +24,7 @@ export class SearchModalComponent implements OnInit {
   }
   closeUsersModal() {
     this.activeModal.close();
+    this.isActive = false;
   }
   getUsers() {
     this.projectMgmtService.getAllUsers('firstName').subscribe((res) => {

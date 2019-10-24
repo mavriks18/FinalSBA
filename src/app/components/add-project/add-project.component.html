@@ -46,7 +46,7 @@
   <div class="form-group">
     <div class="input-group">
       <button type="submit" class="form-control btn btn-primary"
-        (click)="onAddProjectSubmit(addProjectFrom)">{{_submitText}}</button>
+        (click)="onAddProjectSubmit(addProjectFrom.value,addProjectFrom.valid)">{{_submitText}}</button>
       &nbsp;
       <button type="reset" class=" form-control btn btn-secondary">Reset</button>
     </div>
@@ -103,7 +103,7 @@
           </td>
           <td>
             <button type="submit" class="btn btn-primary"
-              (click)="OnUpdateProject(item.project_id,addProjectFrom)">Update</button>
+              (click)="OnUpdateProject(item.project_id)">Update</button>
             <br /><br />
             <button type="button" class="btn btn-secondary" (click)="onSuspendProject(item.project_id)">Suspend</button>
           </td>

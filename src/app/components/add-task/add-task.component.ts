@@ -22,7 +22,7 @@ export class AddTaskComponent implements OnInit {
   isupdateRoute: boolean;
   commandtext: string;
   constructor(private projectManagementSvc: ProjectManagementService,
-    private modalService: NgbModal, private formsModule :FormsModule, private datepipe: DatePipe) { }
+    private modalService: NgbModal, private datepipe: DatePipe) { }
   modalOptions: NgbModalOptions;
   chosenManager: string;
   _taskid: string;
@@ -31,6 +31,24 @@ export class AddTaskComponent implements OnInit {
     if (this.projectManagementSvc.selectedTask != null) {
       this._taskid = this.projectManagementSvc.selectedTask.task_id;
     }
+    this.resetToDefault();
+    this.refreshTask();
+    this.isLoadingAfterUpdate = false;
+  }
+  refreshTask() {
+    if (this._taskid != null && this._taskid != '') {
+      this.isupdateRoute = true;
+      this.commandtext = "Update Task";
+      this.projectManagementSvc.getTaskDetail(this._taskid).subscribe((res) => {
+        this.projectManagementSvc.selectedTask = res[0] as Task;        
+      });
+    }
+  }
+  setSliderValue(prior) {
+    this.projectManagementSvc.selectedTask.priority = prior;
+  }
+  resetToDefault()
+  {
     this.projectManagementSvc.selectedTask = {
       parent_id: "",
       task_id: "",
@@ -43,33 +61,6 @@ export class AddTaskComponent implements OnInit {
       user_id: "",
       is_parent: false
     }
-    this.refreshTask();
-    this.isLoadingAfterUpdate = false;
-  }
-  refreshTask() {
-    if (this._taskid != null && this._taskid != '') {
-      this.isupdateRoute = true;
-      this.commandtext = "Update Task";
-      this.projectManagementSvc.getTaskDetail(this._taskid).subscribe((res) => {
-        this.projectManagementSvc.selectedTask = res[0] as Task;
-        // var parsedDate = '';       
-        // parsedDate = this.datepipe.transform(this.projectManagementSvc.selectedTask.start_date, 'yyyy-MM-dd');
-        // this.projectManagementSvc.selectedTask.start_date = new Date(parsedDate)
-        // parsedDate = this.datepipe.transform(this.projectManagementSvc.selectedTask.end_date, 'yyyy-MM-dd');
-        // this.projectManagementSvc.selectedTask.end_date = new Date(parsedDate)
-      });
-    }
-  }
-  setSliderValue(prior) {
-    this.projectManagementSvc.selectedTask.priority = prior;
-  }
-
-  open(content) {
-    this.modalService.open(content, this.modalOptions).result.then((result) => {
-      this.closeResult = 'Closed with: ${result}';
-    }, (reason) => {
-      this.closeResult = 'Dismissed ${this.getDismissReason(reason)}';
-    });
   }
   openProjectModal() {
     const modalRef = this.modalService.open(SearchProjectComponent);
@@ -83,28 +74,24 @@ export class AddTaskComponent implements OnInit {
     const modalRef = this.modalService.open(SearchTaskComponent);
   }
 
-  onAddTaskSubmit(form: NgForm) {    
-    if (form.valid) {
+  onAddTaskSubmit(value, valid) {    
+    if (valid) {
       if (this.isparent) {
-        this.projectManagementSvc.postParentTaskDetail(form.value);
+        this.projectManagementSvc.postParentTaskDetail(value);
         this.isparent = false;
       }
       else {
 
-        this.projectManagementSvc.postTaskDetail(form.value);
+        this.projectManagementSvc.postTaskDetail(value);
         this.isupdateRoute = false;
       }
-      this.isLoadingAfterUpdate = true;
-      form.resetForm();
-    }
-  }
-  resetTaskForm(form?: NgForm) {
-    if (form) {
-      form.resetForm();
+      this.isLoadingAfterUpdate = true; 
+      this.resetToDefault();     
     }
   }
 
-  onCheckedChange(checked: boolean, form: NgForm) {
+
+  onCheckedChange(checked: boolean) {
     this.isparent = checked;
   }
 
