@@ -6,6 +6,7 @@ import { Project } from './models/project.model'
 import { Task } from './models/task.model'
 import { Users } from './models/users.model'
 import { ParentTask } from './models/parent-task.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,17 +29,17 @@ export class ProjectManagementService {
   postProjectDetail(project: Project) {
     
     return this.http.post(this.baseURL + '/addproject', project).subscribe((res) => { }, (error) => { console.log(error) });
-  }
+  }  
+  postSuspendProject(id:string) {    
+    var params = new HttpParams().set('projectId', id);   
+    return this.http.get(this.baseURL + '/suspendProject', { params }).subscribe((res)=>{ console.log(res)}, (error) => {console.log(error)});       
+  } 
   getProjectDetail(id) {
     var params = new HttpParams().set('id', id);
     return this.http.get<Project>(this.baseURL + '/getProject', { params })
-  }
-
-  deleteProject(id: string) {
-    return this.http.delete(this.baseURL + '/deleteProject/' + id);
-  }
+  }  
   getAllProjects(sortField) {
-    var params = new HttpParams().set('sort', sortField);
+    var params = new HttpParams().set('sort', sortField);    
     return this.http.get(this.baseURL + '/getAllProjects', { params });
   }
 

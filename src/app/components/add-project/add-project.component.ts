@@ -17,6 +17,7 @@ export class AddProjectComponent implements OnInit {
   modalOptions: NgbModalOptions;
   chosenManager: string;
   isLoadingAfterUpdate: boolean;
+  updateSuccessful : boolean;
   constructor(
     private projectManagementSvc: ProjectManagementService,
     private modalService: NgbModal,     
@@ -37,18 +38,19 @@ export class AddProjectComponent implements OnInit {
       priority: "",
       start_date: new Date(),
       end_date: new Date(),
-      manager: ""
+      manager: "",
+      status
     }
     this.isLoadingAfterUpdate = false;
-
+  this.updateSuccessful = false;
     this.refreshProjectList('start_date');
 
   }
 
-  onAddProjectSubmit(form: NgForm) {
-    console.log(form);
+  onAddProjectSubmit(form: NgForm) {    
     if (form.valid) 
     {
+
       this.projectManagementSvc.postProjectDetail(form.value);      
       form.resetForm();      
       this.refreshProjectList('start_date');    
@@ -58,7 +60,12 @@ export class AddProjectComponent implements OnInit {
   setSliderValue(prior) {
     this.projectManagementSvc.selectedProject.priority = prior;
   }
-
+  onSuspendProject(id: string)
+  {    
+    this.projectManagementSvc.postSuspendProject(id)
+      this.updateSuccessful = true;    
+    
+  }
   
   openModal() {
     const modalRef = this.modalService.open(SearchModalComponent);    
@@ -73,7 +80,7 @@ export class AddProjectComponent implements OnInit {
     }
     this.sortdirection = sortOption;
     this.projectManagementSvc.getAllProjects(sortOption).subscribe((res) => {
-      this.projectManagementSvc.projectList = res as Project[];
+      this.projectManagementSvc.projectList = res as Project[];      
     });
   }
   OnUpdateProject(id: string, form: NgForm) {
@@ -85,7 +92,8 @@ export class AddProjectComponent implements OnInit {
         priority: this.projectManagementSvc.selectedProject.priority,
         start_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.start_date, 'yyyy-MM-dd'),
         end_date: this.datepipe.transform(this.projectManagementSvc.selectedProject.end_date, 'yyyy-MM-dd'),
-        manager: this.projectManagementSvc.selectedProject.manager
+        manager: this.projectManagementSvc.selectedProject.manager,
+        status : this.projectManagementSvc.selectedProject.status
       });
     });
     this._submitText = "Update Project";

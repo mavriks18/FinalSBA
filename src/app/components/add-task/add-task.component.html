@@ -1,106 +1,103 @@
-<div class="container">
-  <form #addTaskForm="ngForm" class="form-horizontal">
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="project_id">Project:</label>
-      <div class="col-sm-10">
-        <div style="float: left;">
-          <input type="text" class="form-control width200" readonly required #project_id="ngModel"
-            [(ngModel)]="projectManagementSvc.selectedTask.project_id" name="project_id" id="project_id"
-            [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addTaskForm.submitted && project_id.invalid }">
-          <input type="hidden" class="form-control width200" readonly #task_id="ngModel"
-            [(ngModel)]="projectManagementSvc.selectedTask.task_id" name="task_id" id="task_id">
-          <div *ngIf="!isLoadingAfterUpdate && addTaskForm.submitted && project_id.invalid" class="invalid-details">
-            <div *ngIf="project_id.errors.required">Project is required</div>
-          </div>
-        </div>
-
-      </div>&nbsp; <button class="btn btn-primary" [disabled]="isupdateRoute"
-        (click)="openProjectModal()">Search</button>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="task">Task:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control width200" required #task="ngModel"
-          [(ngModel)]="projectManagementSvc.selectedTask.task" name="task" id="task"
-          [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addTaskForm.submitted && task.invalid }">
-        <div *ngIf="!isLoadingAfterUpdate && addTaskForm.submitted && task.invalid" class="invalid-details">
-          <div *ngIf="task.errors.required">Task is required</div>
-        </div>
-      </div>&nbsp; <input type="checkbox" [disabled]="isupdateRoute" id="checkParentTask" #checkParentTask ngModel
-        name="checkParentTask" (click)="onCheckedChange(checkParentTask.checked,addTaskForm)"> Parent
-      Task
-    </div>
-
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="priority">Priority: </label>
-      <div class="col-sm-10">
-        <input type="range" class="form-contro" style="width:300px" min="0" max="30" step="1" #priority="ngModel"
-          [disabled]="checkParentTask.checked" [(ngModel)]="projectManagementSvc.selectedTask.priority"
-          ng-change="setSliderValue(this.value)" name="priority" id="priority"></div>
-      <span style="float:right; margin-right: 340px;">{{projectManagementSvc.selectedTask.priority}}</span>
-    </div>
-
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="parent_id">Parent Task:</label>
-      <div class="col-sm-10">
-        <div style="float: left;">
-          <input type="text" readonly class="form-control" #parent_id="ngModel"
-            [(ngModel)]="projectManagementSvc.selectedTask.parent_id" name="parent_id" id="parent_id"
-            value="{{projectManagementSvc.selectedTask.parent_id}}">
-        </div>
-        &nbsp; <button class="btn btn-primary" [disabled]="checkParentTask.checked"
-          (click)="openTaskModal()">Search</button>
+<form #addTaskForm="ngForm" class="form-horizontal">
+  <div class="form-group">
+    <input type="hidden" class="form-control" readonly #task_id="ngModel"
+      [(ngModel)]="projectManagementSvc.selectedTask.task_id" name="task_id" id="task_id">
+  </div>
+  <div class="form-group">
+    <label for="project_id">Project:</label>
+    <div class="input-group">
+      <input type="text" class="form-control" readonly required #project_id="ngModel"
+        [(ngModel)]="projectManagementSvc.selectedTask.project_id" name="project_id" id="project_id"
+        [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addTaskForm.submitted && project_id.invalid }">
+      &nbsp; <button class="btn btn-primary" [disabled]="isupdateRoute" (click)="openProjectModal()">Search</button>
+      <div *ngIf="!isLoadingAfterUpdate && addTaskForm.submitted && project_id.invalid" class="invalid-details">
+        <div *ngIf="project_id.errors.required">Project is required</div>
       </div>
-
     </div>
+  </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="start_date">Start Date:</label>
-      &nbsp;
-      <input type="date" class="form-control width200" [disabled]="checkParentTask.checked" 
-        #start_date="ngModel" [(ngModel)]="projectManagementSvc.selectedTask.start_date" name="start_date"
-        id="start_date">
-      &nbsp;
-      <label class="control-label col-sm-2" for="end_date">End Date:</label>
-      &nbsp;
-      <input type="date" class="form-control width200" [disabled]="checkParentTask.checked"  #end_date="ngModel"
-        [(ngModel)]="projectManagementSvc.selectedTask.end_date" name="end_date" id="end_date">
+  <div class="form-group">
+    <label for="task">Task:</label>
+    <input type="text" class="form-control" required #task="ngModel"
+      [(ngModel)]="projectManagementSvc.selectedTask.task" name="task" id="task"
+      [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addTaskForm.submitted && task.invalid }">
+    <div *ngIf="!isLoadingAfterUpdate && addTaskForm.submitted && task.invalid" class="invalid-details">
+      <div *ngIf="task.errors.required">Task is required</div>
     </div>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" [disabled]="isupdateRoute" id="checkParentTask" #checkParentTask ngModel
+      name="checkParentTask" (click)="onCheckedChange(checkParentTask.checked,addTaskForm)"> Parent
+    Task
+  </div>
 
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="user_id">User:</label>
-      <div class="col-sm-10">
-        <div style="float:left">
-          <input type="text" class="form-control width200" readonly  #user_id="ngModel"
-            [(ngModel)]="projectManagementSvc.selectedTask.user_id" name="user_id" id="user_id">
-        </div>
-      </div>&nbsp; <button class="btn btn-primary" [disabled]="checkParentTask.checked ||isupdateRoute"
+  <div class="form-group">
+    <label for="priority">Priority: </label>
+    <span style="float:right;">{{projectManagementSvc.selectedTask.priority}}</span>
+    <input type="range" class="form-control" min="0" max="30" step="1" #priority="ngModel"
+      [disabled]="checkParentTask.checked" [(ngModel)]="projectManagementSvc.selectedTask.priority"
+      ng-change="setSliderValue(this.value)" name="priority" id="priority">
+  </div>
+
+  <div class="form-group">
+    <label for="parent_id">Parent Task:</label>
+    <div class="input-group">
+      <input type="text" readonly class="form-control" #parent_id="ngModel"
+        [(ngModel)]="projectManagementSvc.selectedTask.parent_id" name="parent_id" id="parent_id"
+        value="{{projectManagementSvc.selectedTask.parent_id}}">
+      &nbsp; <button class="form-control btn btn-primary" [disabled]="checkParentTask.checked"
+        (click)="openTaskModal()">Search</button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="start_date">Start Date:</label>
+    <input type="date" class="form-control" [disabled]="checkParentTask.checked" #start_date="ngModel"
+      [(ngModel)]="projectManagementSvc.selectedTask.start_date" name="start_date" id="start_date">
+  </div>
+  <div class="form-group">
+    <label for="end_date">End Date:</label>
+    <input type="date" class="form-control" [disabled]="checkParentTask.checked" #end_date="ngModel"
+      [(ngModel)]="projectManagementSvc.selectedTask.end_date" name="end_date" id="end_date">
+  </div>
+
+  <div class="form-group">
+    <label for="user_id">User:</label>
+    <div class="input-group">
+      <input type="text" class="form-control width200" readonly #user_id="ngModel"
+        [(ngModel)]="projectManagementSvc.selectedTask.user_id" name="user_id" id="user_id">
+
+      &nbsp; <button class="form-control btn btn-primary" [disabled]="checkParentTask.checked ||isupdateRoute"
         (click)="openUserModal()">Search</button>
     </div>
-
-    <hr style="border: 1px solid blue" />
-    <div>
-      <button type="submit" class="btn btn-primary" (click)="onAddTaskSubmit(addTaskForm)">{{commandtext}}</button>
-
+  </div>
+  <div class="form-group">
+    <button type="submit" class="form-control btn btn-primary"
+      (click)="onAddTaskSubmit(addTaskForm)">{{commandtext}}</button>
+  </div>
+  <div class="form-group">
+    <div class="input-group">
+      <button type="submit" class="form-control btn btn-primary"
+        (click)="onAddTaskSubmit(addTaskForm)">{{commandtext}}</button>
       &nbsp;
-      <button type="button" class="btn btn-secondary" (click)="resetTaskForm(addTaskForm)">Reset Task</button>
+      <button type="button" class="form-control btn btn-secondary" (click)="resetTaskForm(addTaskForm)">Reset Task</button>
+    </div>
+  </div>
+
+  <hr style="border: 1px solid blue" />
+ 
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"></h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
 
     </div>
-
-    <ng-template #mymodal let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Search Project</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-      </div>
-    </ng-template>
-  </form>
-</div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
+    </div>
+  </ng-template>
+</form>

@@ -1,122 +1,129 @@
-<div class="container">
-  <form #addProjectFrom="ngForm"  class="form-horizontal">    
-    <div class="form-group">    
-    <label class="control-label col-sm-2" for="project">Project:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control width200" required #project="ngModel"
-          [(ngModel)]="this.projectManagementSvc.selectedProject.project"   name="project" id="project"
-          [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid }">
-      </div>
-      <div *ngIf="!isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid" class="invalid-details">
-        <div *ngIf="project.errors.required">Project is required</div>
-      </div>
+<form #addProjectFrom="ngForm">
+  <div class="form-group">
+    <label for="project">Project:</label>
+    <input type="text" class="form-control" required #project="ngModel"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.project" name="project" id="project"
+      [ngClass]="{ 'is-invalid': !isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid }">
+    <div *ngIf="!isLoadingAfterUpdate && addProjectFrom.submitted && project.invalid" class="invalid-details">
+      <div *ngIf="project.errors.required">Project is required</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" id="checkStartDate" name="checkStartDate">Set Start Date and EndDate
+    <input type="date" #start_date="ngModel" class="form-control"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.start_date" name="start_date" id="start_date">
+    &nbsp;
+    &nbsp;
+    <input type="date" #end_date="ngModel" class="form-control"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.end_date" name="end_date" id="end_date">
+
+  </div>
+  <div class="form-group">
+    <input type="hidden" class="form-control" #project_id="ngModel"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.project_id" name="project_id" id="project_id">
+      <input type="hidden" class="form-control" #project_id="ngModel"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.status" name="status" id="status">
+  </div>
+  <div class="form-group mr-5">
+    <label for="priority">Priority:</label>
+    <span style="float:right;">{{this.projectManagementSvc.selectedProject.priority}}</span>
+    <input type="range" class="form-control" min="0" max="30" step="1" #priority="ngModel"
+      [(ngModel)]="this.projectManagementSvc.selectedProject.priority" ng-change="setSliderValue(this.value)"
+      name="priority" id="priority">
+    
+  </div>
+  <div class="form-group">
+    <label for="manager">Manager:</label>
+    <div class="input-group">
+      <input type="text" readonly class="form-control" #manager="ngModel"
+        [(ngModel)]="this.projectManagementSvc.selectedProject.manager" name="manager" id="manager"
+        value="{{this.projectManagementSvc.selectedProject.manager}}">
+      &nbsp;
+      <button type="button" class="form-control btn btn-primary" (click)="openModal()">Search</button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <button type="submit" class="form-control btn btn-primary"
+        (click)="onAddProjectSubmit(addProjectFrom)">{{_submitText}}</button>
+      &nbsp;
+      <button type="reset" class=" form-control btn btn-secondary">Reset</button>
+    </div>
+  </div>
+
+  <hr style="border: 1px solid blue" />
+  <div>
+    <div class="form-group">
+      <input type="text" class="form-control" id="search" name="search" placeholder="Search...">
     </div>
     <div class="form-group">
-      <div class="col-sm-10" style="margin-left:80px">
-        <input type="checkbox" id="checkStartDate" name="checkStartDate">Set Start Date and EndDate
-        <input type="date" #start_date="ngModel" [(ngModel)]="this.projectManagementSvc.selectedProject.start_date"
-          name="start_date" id="start_date">
+      Sort
+      <div class="input-group">
+        <button type="button" class="form-control btn btn-primary" (click)="refreshProjectList('start_date asc')">Start
+          Date</button>
         &nbsp;
+        <button type="button" class="form-control btn btn-primary" (click)="refreshProjectList('end_date asc')">End
+          Date</button>
         &nbsp;
-        <input type="date" #end_date="ngModel" [(ngModel)]="this.projectManagementSvc.selectedProject.end_date"
-          name="end_date" id="end_date">
+        <button type="button" class="form-control btn btn-primary" (click)="refreshProjectList('priority asc')">
+          Priority</button>
+        &nbsp;
+        <button type="button" class="form-control btn btn-primary"
+          (click)="refreshProjectList('status asc')">Completed</button>
       </div>
     </div>
-    <div class="form-group">
-      <input type="hidden" class="form-control width200"  #project_id="ngModel"
-      [(ngModel)]="this.projectManagementSvc.selectedProject.project_id"   name="project_id" id="project_id">
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="priority">Priority: </label>
-      <div class="col-sm-10">
-        <input type="range" class="form-contro" style="width:300px" min="0" max="30" step="1" 
-          #priority="ngModel" [(ngModel)]="this.projectManagementSvc.selectedProject.priority"
-          ng-change="setSliderValue(this.value)" name="priority" id="priority"></div>
-      <span style="float:right; margin-right: 340px;">{{this.projectManagementSvc.selectedProject.priority}}</span>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" for="manager">Manager:</label>
-      <div class="col-sm-10">
-        <div style="float: left;">
-          <input type="text" readonly class="form-control" #manager="ngModel"
-            [(ngModel)]="this.projectManagementSvc.selectedProject.manager" name="manager" id="manager"
-            value="{{this.projectManagementSvc.selectedProject.manager}}">
-        </div>
-        &nbsp; <button type="button" class="btn btn-primary" (click)="openModal()">Search</button>
-      </div>
+  </div>  
+  <div class="table-responsive">
+    <table class="table">      
+      <tbody>
+        <tr *ngFor="let item of projectManagementSvc.projectList">
+          <td>
+            <div class="table-responsive" style="background-color: lightgrey;">
+              <table class="table">
+                <tr>
+                  <td>Project:</td>
+                  <td>{{item.project}}</td>
+                </tr>
+                <tr>
+                  <td>No of Tasks : </td>
+                  <td>Completed: </td>
+                </tr>
+                <tr>
+                  <td>Start Date: {{item.start_date | date}}</td>
+                  <td>End Date: {{item.end_date | date}}</td>
+                </tr>
+              </table>
+            </div>
+          </td>
+          <td style="vertical-align: middle;">
+            Priority
+            <br />
+            <div style="text-align:center; background-color: lightgrey;">{{item.priority}}</div>
+          </td>
+          <td>
+            <button type="submit" class="btn btn-primary"
+              (click)="OnUpdateProject(item.project_id,addProjectFrom)">Update</button>
+            <br /><br />
+            <button type="button" class="btn btn-secondary" (click)="onSuspendProject(item.project_id)">Suspend</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Bootstrap Modal</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-    <div class="form-group">
-      <button type="submit" (click)="onAddProjectSubmit(addProjectFrom)" class="btn btn-primary">{{_submitText}}</button>
-      &nbsp; <button type="reset" class="btn btn-secondary">Reset</button>
+    <div class="modal-body">
+      
     </div>
-    <hr style="border: 1px solid blue" />
-    <div>
-
-      <input type="text" class="form-control width150" id="search" name="search" placeholder="Search...">
-      <br />
-      <span class="left20Right20Margin">Sort</span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary"(click)="refreshProjectList('start_date asc')">Start Date</button></span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshProjectList('end_date asc')">End Date</button></span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshProjectList('priority asc')">Priority</button></span>
-      <span class="left20Right20Margin"><button type="button" class="btn btn-primary" (click)="refreshProjectList('status asc')">Completed</button></span>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
     </div>
-    <div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Project Name</th>
-            <th>Project Id</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor = "let item of projectManagementSvc.projectList">
-            <td>
-              <div style="background-color: lightgrey;">
-                <table>
-                  <tr>
-                    <td>Project:</td>
-                    <td>{{item.project}}</td>
-                  </tr>
-                  <tr>
-                    <td>No of Tasks : </td>
-                    <td>Completed: </td>
-                  </tr>                  
-                  <tr>
-                    <td>Start Date: {{item.start_date | date}}</td>
-                    <td>End Date: {{item.end_date | date}}</td>
-                  </tr>
-                </table>               
-              </div>
-            </td>
-            <td style="vertical-align: middle;">
-              Priority 
-              <br/>
-               <div style="text-align:center; background-color: lightgrey;">{{item.priority}}</div>
-              </td>
-            <td>
-              <button type="submit" class="btn btn-primary" (click)="OnUpdateProject(item.project_id,addProjectFrom)">Update</button>
-              <br/><br/>
-              <button type="button" class="btn btn-secondary">Suspend</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <ng-template #mymodal let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Bootstrap Modal</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Here I am!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button>
-      </div>
-    </ng-template>
-  </form>
-</div>
+  </ng-template>
+</form>

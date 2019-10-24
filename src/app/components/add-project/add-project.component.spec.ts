@@ -3,10 +3,10 @@ import {FormsModule, NgForm} from '@angular/forms'
 import { AddProjectComponent } from './add-project.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProjectManagementService } from 'src/app/shared/project-management.service';
-import { DatePipe } from '@angular/common'
+import { DatePipe, CommonModule } from '@angular/common'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Project } from 'src/app/shared/models/project.model';
-import { timer } from 'rxjs';
+import { timer, defer } from 'rxjs';
 import { isRegExp } from 'util';
 
 describe('AddProjectComponent', () => {
@@ -60,6 +60,11 @@ describe('AddProjectComponent', () => {
     tick(5000);        
     expect(sharedService.projectList.length).toBeGreaterThan(0);    
 }));
-
+it('shoudl suspend project' , ()=>{
+  const { sharedService,httpTestingController } = setup(); 
+  component.onSuspendProject('1');
+  
+  expect(component.updateSuccessful).toBe(true);
+});
 
 });

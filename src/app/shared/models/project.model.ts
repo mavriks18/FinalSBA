@@ -6,4 +6,5 @@ export class Project{
     start_date:Date;
     end_date:Date;
     priority:string;
+    status:string;
 }
