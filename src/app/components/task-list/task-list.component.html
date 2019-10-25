@@ -55,7 +55,7 @@
             {{item.end_date | date : "MM-dd-yyyy"}}
           </td>
           <td>
-            <button class="btn btn-primary" (click)="onEditTask(item.task_id)">Edit</button>
+            <button class="btn btn-primary" [disabled]= "(item.status == 'completed')" (click)="onEditTask(item.task_id)">Edit</button>
           </td>
           <td>
             <button class="btn btn-secondary" (click)="onEndTask(item.task_id, item.project_id)">End Task</button>
